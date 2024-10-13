@@ -3,15 +3,16 @@ import matplotlib.pyplot as plt
 import os
 
 
-def create_empty_map(path_ids, title):
+def create_empty_map(path_ids, title, instance):
     
-    data = pd.read_csv("../evolutionary-computing/src/main/resources/TSPA.csv", sep=';', header=None)
+    data = pd.read_csv(f"../evolutionary-computing/src/main/resources/{instance}.csv", sep=';', header=None)
 
     data.columns = ['X', 'Y', 'COST']
-    print(data.head())
 
     plt.figure(figsize=(10, 8))
     plt.scatter(data['X'], data['Y'], color='blue', marker='o', label='Points')
+
+    path_ids.append(path_ids[0])
 
     path_x = data['X'].iloc[path_ids]
     path_y = data['Y'].iloc[path_ids]
@@ -24,7 +25,7 @@ def create_empty_map(path_ids, title):
     plt.legend()
 
     plt.grid(False)
-    plt.show()
+    plt.savefig('graphs/' + title + '.png')
 
 
 
@@ -34,8 +35,10 @@ def main():
     
     for row in data.iterrows():
         solution =[int(x) for x in row[1]['Solution'][1:-1].split(', ')]
-        title = row[1]['Name'] + " - " + row[1]['Instance']
-        create_empty_map(solution, title)
+        instance = row[1]['Instance']
+        title = row[1]['Name'] + " - " + instance
+        print(instance)
+        create_empty_map(solution, title, instance)
 
 if __name__ == "__main__":
     main()

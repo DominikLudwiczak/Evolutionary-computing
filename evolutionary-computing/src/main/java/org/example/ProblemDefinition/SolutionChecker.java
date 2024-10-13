@@ -20,10 +20,11 @@ public class SolutionChecker {
             distance += distanceMatrix.get(solution.get(i)).get(solution.get(i + 1));
             distance += nodeCosts.get(solution.get(i + 1));
         }
+        distance += distanceMatrix.get(solution.get(solution.size() - 1)).get(solution.get(0));
         return distance;
     }
 
-    public void PerformNExperiments(List<List<Integer>> solutions, int N, String problemName)
+    public void PerformNExperiments(List<List<Integer>> solutions, int N, String problemName, String problemInstance)
     {
         if(solutions.size() != N)
         {
@@ -49,7 +50,7 @@ public class SolutionChecker {
         }
 
         //save the best solution to txt file
-        SolutionSaver.SaveSolution("output.csv", problemName, "TSPA", BestSolution.toString(), min_distance);
+        SolutionSaver.SaveSolution("output.csv", problemName, problemInstance, BestSolution.toString(), min_distance);
 
         System.out.println("-------------------" + problemName.toUpperCase() + "-------------------");
         System.out.println("Min distance: " + min_distance);
