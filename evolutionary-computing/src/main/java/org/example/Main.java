@@ -15,6 +15,7 @@ public class Main {
                 // random solution
                 var Random = new RandomSolution(Problem.getDistanceMatrix());
                 var randomSolution = Random.Solve(200);
+                Solution.PerformNExperiments(randomSolution, 200,"Random");
 
                 // nearest neighbor solution
                 var NN = new NearestNeighbor(Problem.getDistanceMatrix(), Problem.getNodeCosts());
@@ -27,5 +28,6 @@ public class Main {
                 // greedy cycle solution
                 var GC = new GreedyCycle(Problem.getDistanceMatrix(), Problem.getNodeCosts());
                 var greedyCycleSolution = GC.Solve(200);
+                Solution.PerformNExperiments(nearestNeighborSolution, 200,"NearestNeighbor");
         }
 }
