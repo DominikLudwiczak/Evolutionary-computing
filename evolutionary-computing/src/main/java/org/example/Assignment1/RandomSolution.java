@@ -26,8 +26,6 @@ public class RandomSolution {
             permutation.add(i);
         }
         Collections.shuffle(permutation);
-        permutation.remove((Integer) startingNode);
-        permutation.add(0, startingNode);
-        return permutation;
+        return permutation.subList(0, permutation.size() / 2);
     }
 }
