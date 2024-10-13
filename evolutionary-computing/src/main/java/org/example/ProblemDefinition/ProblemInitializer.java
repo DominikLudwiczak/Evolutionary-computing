@@ -10,6 +10,13 @@ public class ProblemInitializer {
     private List<List<Integer>> distanceMatrix;
     private List<Integer> nodeCosts;
 
+    public List<Integer> getNodeCosts() {
+        return nodeCosts;
+    }
+    public List<List<Integer>> getDistanceMatrix() {
+        return distanceMatrix;
+    }
+
     public ProblemInitializer() {
         distanceMatrix = new ArrayList<>();
         nodeCosts = new ArrayList<>();
@@ -20,6 +27,7 @@ public class ProblemInitializer {
     {
         List<GraphNode> graphNodes = new ArrayList<>();
         String csvFile = "src/main/resources/" + path;
+        int i = 0;
         try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
             String[] line;
             while ((line = reader.readNext()) != null) {
@@ -27,6 +35,8 @@ public class ProblemInitializer {
                 System.out.println(Values[0] + " " + Values[1] + " " + Values[2]);
                 graphNodes.add(new GraphNode(Integer.parseInt(Values[0]), Integer.parseInt(Values[1]), Integer.parseInt(Values[2])));
                 nodeCosts.add(Integer.parseInt(Values[2]));
+                if (i++ == 10)
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
