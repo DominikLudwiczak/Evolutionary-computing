@@ -1,7 +1,9 @@
 package org.example;
 
+import org.example.Assignment1.GreedyCycle;
 import org.example.Assignment1.NearestNeighbor;
 import org.example.Assignment1.RandomSolution;
+import org.example.Assignment1.NearestNeighborAny;
 import org.example.ProblemDefinition.ProblemInitializer;
 import org.example.ProblemDefinition.SolutionChecker;
 
@@ -17,5 +19,13 @@ public class Main {
                 // nearest neighbor solution
                 var NN = new NearestNeighbor(Problem.getDistanceMatrix(), Problem.getNodeCosts());
                 var nearestNeighborSolution = NN.Solve(200);
+
+                // any nearest neighbor solution
+                var NNA = new NearestNeighborAny(Problem.getDistanceMatrix(), Problem.getNodeCosts());
+                var anyNearestNeighborSolution = NNA.Solve(200);
+
+                // greedy cycle solution
+                var GC = new GreedyCycle(Problem.getDistanceMatrix(), Problem.getNodeCosts());
+                var greedyCycleSolution = GC.Solve(200);
         }
 }
