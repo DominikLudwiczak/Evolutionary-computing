@@ -13,9 +13,11 @@ public class Main {
                 // random solution
                 var Random = new RandomSolution(Problem.getDistanceMatrix());
                 var randomSolution = Random.Solve(200);
+                Solution.PerformNExperiments(randomSolution, 200,"Random");
 
                 // nearest neighbor solution
                 var NN = new NearestNeighbor(Problem.getDistanceMatrix(), Problem.getNodeCosts());
                 var nearestNeighborSolution = NN.Solve(200);
+                Solution.PerformNExperiments(nearestNeighborSolution, 200,"NearestNeighbor");
         }
 }
