@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.Assignment1.NearestNeighbor;
+import org.example.Assignment1.RandomSolution;
 import org.example.ProblemDefinition.ProblemInitializer;
 import org.example.ProblemDefinition.SolutionChecker;
 
