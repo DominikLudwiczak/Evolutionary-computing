@@ -38,4 +38,13 @@ public class SolutionSaver {
             e.printStackTrace();
         }
     }
+
+    public static void RemoveFile(String fileName) {
+        File file = new File(fileName);
+        if (file.delete()) {
+            System.out.println("File deleted successfully");
+        } else {
+            System.out.println("Failed to delete the file");
+        }
+    }
 }

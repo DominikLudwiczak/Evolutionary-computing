@@ -17,10 +17,10 @@ public class ProblemInitializer {
         return distanceMatrix;
     }
 
-    public ProblemInitializer() {
+    public ProblemInitializer(String problemInstance) {
         distanceMatrix = new ArrayList<>();
         nodeCosts = new ArrayList<>();
-        CreateDistanceMatrix();
+        CreateDistanceMatrix(problemInstance);
     }
 
     public List<GraphNode> ReadFile(String path)
