@@ -23,20 +23,37 @@ public class SolutionChecker {
         return distance;
     }
 
-    public void PerformNExperiments(List<List<Integer>> solutions, int N)
+    public void PerformNExperiments(List<List<Integer>> solutions, int N, String problemName)
     {
         if(solutions.size() != N)
         {
             throw new IllegalArgumentException("The number of solutions must be equal to N");
         }
         List<Integer> distances = new ArrayList<>();
+        int min_distance = Integer.MAX_VALUE;
+        int max_distance = Integer.MIN_VALUE;
+        List<Integer> BestSolution = new ArrayList<>();
 
         for (int i = 0; i < N; i++) {
-            distances.add(CalculateDistance(solutions.get(i)));
+            var distance = CalculateDistance(solutions.get(i));
+            distances.add(distance);
+            if (distance < min_distance)
+            {
+                min_distance = distance;
+                BestSolution = solutions.get(i);
+            }
+            if (distance > max_distance)
+            {
+                max_distance = distance;
+            }
         }
 
-        System.out.println("The maximum distance is: " + distances.stream().max(Integer::compareTo).get());
-        System.out.println("The minimum distance is: " + distances.stream().min(Integer::compareTo).get());
-        System.out.println("The average distance is: " + distances.stream().mapToInt(Integer::intValue).average().getAsDouble());
+        //save the best solution to txt file
+        SolutionSaver.SaveSolution("output.csv", problemName, "TSPA", BestSolution.toString(), min_distance);
+
+        System.out.println("-------------------" + problemName.toUpperCase() + "-------------------");
+        System.out.println("Min distance: " + min_distance);
+        System.out.println("Max distance: " + max_distance);
+        System.out.println("Average distance: " + distances.stream().mapToInt(Integer::intValue).average().orElse(0));
     }
 }
