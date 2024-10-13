@@ -22,14 +22,11 @@ public class ProblemInitializer {
         String csvFile = "src/main/resources/" + path;
         try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
             String[] line;
-            int i = 0;
             while ((line = reader.readNext()) != null) {
                 var Values = line[0].split(";");
                 System.out.println(Values[0] + " " + Values[1] + " " + Values[2]);
                 graphNodes.add(new GraphNode(Integer.parseInt(Values[0]), Integer.parseInt(Values[1]), Integer.parseInt(Values[2])));
                 nodeCosts.add(Integer.parseInt(Values[2]));
-                if (++i == 10)
-                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();

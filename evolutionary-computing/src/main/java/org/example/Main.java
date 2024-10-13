@@ -7,6 +7,6 @@ public class Main {
     public static void main(String[] args)
     {
         var Problem = new ProblemInitializer();
-        Problem.PrintMatrix();
+//        Problem.PrintMatrix();
     }
 }
