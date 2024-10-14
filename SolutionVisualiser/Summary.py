@@ -6,14 +6,15 @@ import os
 def create_empty_map(path_ids, title, instance):
     
     data = pd.read_csv(f"../evolutionary-computing/src/main/resources/{instance}.csv", sep=';', header=None)
-
     data.columns = ['X', 'Y', 'COST']
 
+    sizes = [int(x) * 0.2 for x in data['COST']]
+
     plt.figure(figsize=(10, 8))
-    plt.scatter(data['X'], data['Y'], color='blue', marker='o', label='Points')
+    
+    plt.scatter(data['X'], data['Y'], color='blue', marker='o', s=sizes, label='Points')
 
     path_ids.append(path_ids[0])
-
     path_x = data['X'].iloc[path_ids]
     path_y = data['Y'].iloc[path_ids]
 
@@ -25,7 +26,8 @@ def create_empty_map(path_ids, title, instance):
     plt.legend()
 
     plt.grid(False)
-    plt.savefig('graphs/' + title + '.png')
+    plt.savefig('assignment1/' + title + '.png')
+
 
 
 
