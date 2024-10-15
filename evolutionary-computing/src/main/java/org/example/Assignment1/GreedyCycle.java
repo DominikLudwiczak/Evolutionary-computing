@@ -49,6 +49,7 @@ public class GreedyCycle {
                         } else {
                             closingCycleDistance = distanceMatrix.get(i).get(visitedNodes.get(0));
                         }
+                        closingCycleDistance -= distanceMatrix.get(visitedNodes.get(0)).get(visitedNodes.get(visitedNodes.size()-1));
                         int newObjective = tempObjective + distanceToNext + nodeCosts.get(i) + closingCycleDistance;
                         if (newObjective < minObjective) {
                             addingNode = i;

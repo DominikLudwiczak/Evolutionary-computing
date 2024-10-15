@@ -33,7 +33,7 @@ public class Assignment1Solver {
     }
 
     public static void solve() {
-        SolutionSaver.RemoveFile("output.csv");
+        SolutionSaver.RemoveFile("output.csv", 1);
         solveInstance("TSPA.csv");
         solveInstance("TSPB.csv");
     }

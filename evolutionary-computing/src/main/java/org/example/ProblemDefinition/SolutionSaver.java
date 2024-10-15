@@ -7,9 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SolutionSaver {
-    public static void CreateFile() {
-        String fileName = "output.csv";
-        File file = new File(fileName);
+    public static void CreateFile(int assignmentNumber) {
+        File file = new File(String.format("outputs/%d/output.csv", assignmentNumber));
 
         if (!file.exists()) {
             try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
@@ -39,8 +38,8 @@ public class SolutionSaver {
         }
     }
 
-    public static void RemoveFile(String fileName) {
-        File file = new File(fileName);
+    public static void RemoveFile(String fileName, int assignmentNumber) {
+        File file = new File(String.format("outputs/%d/%s", assignmentNumber, fileName));
         if (file.delete()) {
             System.out.println("File deleted successfully");
         } else {
