@@ -23,9 +23,8 @@ public class NearestNeighborAny {
 
     public List<Integer> GenerateSolution(int startingNode) {
         List<Integer> solution = new ArrayList<>();
-        int[] objective = {0};
+        int[] objective = {nodeCosts.get(startingNode)};
         solution.add(startingNode);
-        objective[0] += nodeCosts.get(startingNode);
         while (solution.size() < distanceMatrix.size() / 2) {
             solution = FindAnyNearestNeighbor(solution, objective);
         }

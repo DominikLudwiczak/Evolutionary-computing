@@ -23,9 +23,8 @@ public class GreedyCycle {
 
     public List<Integer> GenerateSolution(int startingNode) {
         List<Integer> solution = new ArrayList<>();
-        int[] objective = {0};
+        int[] objective = {nodeCosts.get(startingNode)};
         solution.add(startingNode);
-        objective[0] += nodeCosts.get(startingNode);
         while (solution.size() < distanceMatrix.size() / 2) {
             solution = FindAnyNearestNeighbor(solution, objective);
         }
@@ -42,14 +41,9 @@ public class GreedyCycle {
                 int prevNode = -1;
                 for(Integer node : visitedNodes) {
                     int distanceToNext = distanceMatrix.get(node).get(i);
-                    if(prevNode == -1 || node.equals(visitedNodes.get(visitedNodes.size() - 1))) {
-                        int closingCycleDistance = 0;
-                        if(prevNode == -1) {
-                            closingCycleDistance = distanceMatrix.get(i).get(visitedNodes.get(visitedNodes.size()-1));
-                        } else {
-                            closingCycleDistance = distanceMatrix.get(i).get(visitedNodes.get(0));
-                        }
-                        closingCycleDistance -= distanceMatrix.get(visitedNodes.get(0)).get(visitedNodes.get(visitedNodes.size()-1));
+                    if(prevNode == -1) {
+                        int closingCycleDistance = distanceMatrix.get(i).get(visitedNodes.get(visitedNodes.size()-1));
+                        closingCycleDistance -= distanceMatrix.get(visitedNodes.get(visitedNodes.size()-1)).get(visitedNodes.get(0));
                         int newObjective = tempObjective + distanceToNext + nodeCosts.get(i) + closingCycleDistance;
                         if (newObjective < minObjective) {
                             addingNode = i;
