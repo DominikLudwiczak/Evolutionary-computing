@@ -24,7 +24,8 @@ public class SolutionChecker {
         return distance;
     }
 
-    public void PerformNExperiments(List<List<Integer>> solutions, int N, String problemName, String problemInstance)
+    public void PerformNExperiments(List<List<Integer>> solutions, int N,
+                                    String problemName, String problemInstance, int assignmentNumber)
     {
         if(solutions.size() != N)
         {
@@ -50,7 +51,8 @@ public class SolutionChecker {
         }
 
         //save the best solution to txt file
-        SolutionSaver.SaveSolution("output.csv", problemName, problemInstance, BestSolution.toString(), min_distance);
+        SolutionSaver.SaveSolution("output.csv", problemName,
+                problemInstance, BestSolution.toString(), min_distance, assignmentNumber);
 
         System.out.println("-------------------" + problemName.toUpperCase() + "-------------------");
         System.out.println("Min distance: " + min_distance);

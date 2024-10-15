@@ -7,8 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class SolutionSaver {
-    public static void CreateFile(int assignmentNumber) {
-        File file = new File(String.format("outputs/%d/output.csv", assignmentNumber));
+    public static void CreateFile(String fileName, int assignmentNumber) {
+        File file = new File(String.format("outputs/%d/%s", assignmentNumber, fileName));
 
         if (!file.exists()) {
             try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
@@ -23,11 +23,13 @@ public class SolutionSaver {
         }
     }
 
-    public static void SaveSolution(String fileName, String name, String instance, String solution, int distance) {
-        File file = new File(fileName);
+    public static void SaveSolution(String fileName, String name,
+                                    String instance, String solution,
+                                    int distance, int assignmentNumber) {
+        File file = new File(String.format("outputs/%d/%s", assignmentNumber, fileName));
 
         if (!file.exists()) {
-            CreateFile();
+            CreateFile(fileName, assignmentNumber);
         }
         try (CSVWriter writer = new CSVWriter(new FileWriter(file, true))) {
             String[] data = {name, instance, solution, Integer.toString(distance)};
