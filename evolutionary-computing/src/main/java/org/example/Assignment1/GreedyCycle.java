@@ -28,54 +28,62 @@ public class GreedyCycle {
         while (solution.size() < distanceMatrix.size() / 2) {
             solution = FindAnyNearestNeighbor(solution, objective);
         }
+
         return solution;
     }
 
     private List<Integer> FindAnyNearestNeighbor(List<Integer> visitedNodes, int[] objective) {
         int tempObjective = objective[0];
         int addingNode = -1;
-        int beforeNode = -1;
+        int afterNode = -1;
         int minObjective = Integer.MAX_VALUE;
         for (int i = 0; i < distanceMatrix.size(); i++) {
             if (!visitedNodes.contains(i)) {
                 int prevNode = -1;
+
                 for(Integer node : visitedNodes) {
-                    int distanceToNext = distanceMatrix.get(node).get(i);
-                    if(prevNode == -1) {
-                        int closingCycleDistance = distanceMatrix.get(i).get(visitedNodes.get(visitedNodes.size()-1));
-                        closingCycleDistance -= distanceMatrix.get(visitedNodes.get(visitedNodes.size()-1)).get(visitedNodes.get(0));
-                        int newObjective = tempObjective + distanceToNext + nodeCosts.get(i) + closingCycleDistance;
-                        if (newObjective < minObjective) {
-                            addingNode = i;
-                            minObjective = newObjective;
-                        }
-                    } else {
+                    int distanceToNext = distanceMatrix.get(i).get(node);
+                    int newObjective = tempObjective + distanceToNext + nodeCosts.get(i);
+
+                    if(prevNode != -1) {
                         int distanceToPrev = distanceMatrix.get(prevNode).get(i);
-                        int distaneInCycle = distanceMatrix.get(prevNode).get(node);
-                        int newObjective = tempObjective + distanceToPrev + distanceToNext + nodeCosts.get(i) - distaneInCycle;
-                        if (newObjective < minObjective) {
-                            addingNode = i;
-                            beforeNode = prevNode;
-                            minObjective = newObjective;
+                        int distanceInCycle = 0;
+                        if(!node.equals(visitedNodes.get(visitedNodes.size() - 1))) {
+                            distanceInCycle = distanceMatrix.get(prevNode).get(node);
                         }
+                        newObjective += distanceToPrev - distanceInCycle;
+                    } else {
+                        if(visitedNodes.size() > 1) {
+                            int closingCycleDistance = distanceMatrix.get(i).get(visitedNodes.get(visitedNodes.size() - 1));
+                            if(visitedNodes.size() > 2) {
+                                closingCycleDistance -= distanceMatrix.get(visitedNodes.get(visitedNodes.size() - 1)).get(visitedNodes.get(0));
+                            }
+                            newObjective += closingCycleDistance;
+                        }
+                    }
+
+                    if (newObjective < minObjective) {
+                        addingNode = i;
+                        afterNode = prevNode;
+                        minObjective = newObjective;
                     }
                     prevNode = node;
                 }
             }
         }
         objective[0] = minObjective;
-        return AddNode(visitedNodes, addingNode, beforeNode);
+        return AddNode(visitedNodes, addingNode, afterNode);
     }
 
-    private List<Integer> AddNode(List<Integer> visitedNodes, int addingNode, int beforeNode) {
+    private List<Integer> AddNode(List<Integer> visitedNodes, int addingNode, int afterNode) {
         List<Integer> newVisitedNodes = new ArrayList<>();
-        if(beforeNode == -1) {
+        if(afterNode == -1) {
             newVisitedNodes.add(addingNode);
         }
 
         for(Integer node : visitedNodes) {
             newVisitedNodes.add(node);
-            if(node == beforeNode) {
+            if(node.equals(afterNode)) {
                 newVisitedNodes.add(addingNode);
             }
         }
