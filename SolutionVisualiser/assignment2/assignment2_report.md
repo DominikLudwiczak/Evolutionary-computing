@@ -1,3 +1,7 @@
+Michał Kałmucki 151944
+Dominik Ludwiczak 151948
+(All solutions were checked with solution checker)
+
 # Problem description
 
 We are given three columns of integers with a row for each node. The first two columns contain x
@@ -53,8 +57,6 @@ FUNCTION findFirst2(solution, objective):
   RETURN updated solution
 ```
 
-
-
 ### Results:
 
 | Problem Instance | Min Distance | Max Distance | Average Distance |
@@ -92,7 +94,7 @@ FUNCTION FindRegret2(solution, objective):
 
           UPDATE best and second-best costs for the node
 
-      IF regret cost ratio (calculated as (secondBestCost - bestCost) * 0.5 - bestCost * 0.5) 
+      IF regret cost ratio (calculated as (secondBestCost - bestCost) * 0.5 - bestCost * 0.5)
       is better than the current best regret:
           UPDATE best regret with the node's best and second-best costs, and its position
           SET this node as the adding node
@@ -124,32 +126,28 @@ FUNCTION FindRegret2(solution, objective):
 
 ![TSPBRANDOM](assignment2/WeightedRegret2%20-%20TSPB.png)
 
-
-(All solutions were checked with solution checker)
-
 ## Source code link: [Github](https://github.com/DominikLudwiczak/Evolutionary-computing/tree/main)
 
 ## Summary
 
 ### Comparison of all methods
 
-| Method                              | Instance | Min Distance | Max Distance | Average Distance |
-| ----------------------------------- | -------- | ------------ | ------------ | ---------------- |
-| **RANDOM**                          | TSPA     | 236,372      | 291,536      | 264,513.735      |
-|                                     | TSPB     | 194,771      | 252,218      | 214,996.51       |
-| **NEARESTNEIGHBOR**                 | TSPA     | 83,182       | 89,433       | 85,108.51        |
-|                                     | TSPB     | 52,319       | 59,030       | 54,390.43        |
-| **ANYNEARESTNEIGHBOR**              | TSPA     | 71,179       | 75,450       | 73,178.435       |
-|                                     | TSPB     | 44,417       | 53,438       | 45,870.255       |
-| **GREEDYCYCLE**                     | TSPA     | 71,488       | 74,924       | 72,775.67        |
-|                                     | TSPB     | 49,001       | 57,294       | 51,509.075       |
-| **GREEDY 2-REGRET**                 | TSPA     | 105,852      | 123,171      | 115,630.16       |
-|                                     | TSPB     | 67,568       | 77,329       | 72,656.19        |
-| **GREEDY 2-REGRET WEIGHTED**        | TSPA     | 71,108       | 73,395       | 72,130.045       |
-|                                     | TSPB     | 47,144       | 55,700       | 50,919.565       |
+| Method                       | Instance | Min Distance | Max Distance | Average Distance |
+| ---------------------------- | -------- | ------------ | ------------ | ---------------- |
+| **RANDOM**                   | TSPA     | 236,372      | 291,536      | 264,513.735      |
+|                              | TSPB     | 194,771      | 252,218      | 214,996.51       |
+| **NEARESTNEIGHBOR**          | TSPA     | 83,182       | 89,433       | 85,108.51        |
+|                              | TSPB     | 52,319       | 59,030       | 54,390.43        |
+| **ANYNEARESTNEIGHBOR**       | TSPA     | 71,179       | 75,450       | 73,178.435       |
+|                              | TSPB     | 44,417       | 53,438       | 45,870.255       |
+| **GREEDYCYCLE**              | TSPA     | 71,488       | 74,924       | 72,775.67        |
+|                              | TSPB     | 49,001       | 57,294       | 51,509.075       |
+| **GREEDY 2-REGRET**          | TSPA     | 105,852      | 123,171      | 115,630.16       |
+|                              | TSPB     | 67,568       | 77,329       | 72,656.19        |
+| **GREEDY 2-REGRET WEIGHTED** | TSPA     | 71,108       | 73,395       | 72,130.045       |
+|                              | TSPB     | 47,144       | 55,700       | 50,919.565       |
 
 ### Conclusion
-
 
 The Greedy 2-Regret algorithm showed not bad performance by minimizing regret across instances, achieving efficient results by focusing on balancing short-term and long-term costs. Its ability to consider the second-best insertion option allows for more flexible decision-making and reduced overall costs compared to simpler methods.
 
