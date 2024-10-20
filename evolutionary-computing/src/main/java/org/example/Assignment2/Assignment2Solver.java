@@ -15,9 +15,13 @@ public class Assignment2Solver {
         String problemInstanceName = problemInstance.substring(0, problemInstance.length() - 4);
 
         // random solution
-        var Regret = new RegretMyLifeChoices(Problem.getDistanceMatrix(), Problem.getNodeCosts());
+        var Regret = new RegretMyLifeChoices(Problem.getDistanceMatrix(), Problem.getNodeCosts(), false);
         var regretSolution = Regret.Solve(200);
         Solution.PerformNExperiments(regretSolution, 200, "Regret2", problemInstanceName, 2);
+
+        var WeightedRegret = new RegretMyLifeChoices(Problem.getDistanceMatrix(), Problem.getNodeCosts(), true);
+        var weightedRegretSolution = WeightedRegret.Solve(200);
+        Solution.PerformNExperiments(weightedRegretSolution, 200, "WeightedRegret2", problemInstanceName, 2);
     }
 
     public static void solve() {
