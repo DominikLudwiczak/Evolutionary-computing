@@ -26,14 +26,14 @@ def create_empty_map(path_ids, title, instance):
     plt.legend()
 
     plt.grid(False)
-    plt.savefig('assignment1/' + title + '.png')
+    plt.savefig('assignment2/' + title + '.png')
 
 
 
 
 
 def main():
-    data = pd.read_csv("../evolutionary-computing/output.csv")
+    data = pd.read_csv("../evolutionary-computing/outputs/2/output.csv")
     
     for row in data.iterrows():
         solution =[int(x) for x in row[1]['Solution'][1:-1].split(', ')]

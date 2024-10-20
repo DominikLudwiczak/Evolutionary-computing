@@ -14,7 +14,6 @@ public class Assignment2Solver {
         var Solution = new SolutionChecker(Problem.getDistanceMatrix(), Problem.getNodeCosts());
         String problemInstanceName = problemInstance.substring(0, problemInstance.length() - 4);
 
-        // random solution
         var Regret = new RegretMyLifeChoices(Problem.getDistanceMatrix(), Problem.getNodeCosts(), false);
         var regretSolution = Regret.Solve(200);
         Solution.PerformNExperiments(regretSolution, 200, "Regret2", problemInstanceName, 2);
