@@ -44,7 +44,6 @@ public class RegretMyLifeChoices {
 
     private List<Integer> FindRegret2(List<Integer> solution,
                                       int[] objective) {
-        int minCost = Integer.MAX_VALUE;
         int addingNode = -1;
         var bestRegret = new RegretModel();
         for (int i = 0; i < distanceMatrix.size(); i++) {
