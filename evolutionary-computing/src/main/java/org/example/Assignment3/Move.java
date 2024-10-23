@@ -71,7 +71,7 @@ public class Move {
         int largerIdx = node1Idx < node2Idx ? node2Idx : node1Idx;
 
         var tempsolution = solution.subList(0, smallerIdx + 1);
-        tempsolution.addAll(solution.subList(smallerIdx + 1, );
+        return solution;
     }
 
     private List<Integer> ChangeWithNotUsed(List<Integer> solution){
