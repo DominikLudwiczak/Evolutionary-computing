@@ -1,5 +1,8 @@
 package org.example.Assignment3;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class Move {
@@ -70,8 +73,17 @@ public class Move {
         int smallerIdx = node1Idx < node2Idx ? node1Idx : node2Idx;
         int largerIdx = node1Idx < node2Idx ? node2Idx : node1Idx;
 
-        var tempsolution = solution.subList(0, smallerIdx + 1);
-        return solution;
+        var firstPart = solution.subList(0, smallerIdx + 1);
+        var secondPart = solution.subList(smallerIdx + 1, largerIdx + 1);
+        var thirdPart = solution.subList(largerIdx + 1, solution.size());
+
+        List<Integer> tempsolution = new ArrayList<>();
+        tempsolution.addAll(firstPart);
+        Collections.reverse(secondPart);
+        tempsolution.addAll(secondPart);
+        tempsolution.addAll(thirdPart);
+
+        return tempsolution;
     }
 
     private List<Integer> ChangeWithNotUsed(List<Integer> solution){

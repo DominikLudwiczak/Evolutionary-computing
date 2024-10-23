@@ -21,8 +21,8 @@ public class Main {
                 var Problem = new ProblemInitializer("TSPA.csv");
                 List<Integer> solution = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6));
                 var move = new Move(
-                        MoveType.CHANGE_WITH_NOT_USED,
-                        1, 3,
+                        MoveType.EXCHANGE_EDGES,
+                        2, 6,
                         Problem.getNodeCosts(),
                         Problem.getDistanceMatrix());
                 var newSolution = move.MakeMove(solution);
