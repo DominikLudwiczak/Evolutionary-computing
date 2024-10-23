@@ -29,13 +29,11 @@ public class Move {
                 return SwapWithin(solution);
             case EXCHANGE_EDGES:
                 return ExchangeEdges(solution);
-                break;
             case CHANGE_WITH_NOT_USED:
                 return ChangeWithNotUsed(solution);
             default:
                 return solution;
         }
-        return solution;
     }
 
     private List<Integer> SwapWithin(List<Integer> solution){
