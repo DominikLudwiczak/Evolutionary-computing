@@ -60,6 +60,14 @@ public class Move {
         int prevNode2Idx = node2Idx == 0 ? solution.size() - 1 : node2Idx - 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
+        if (node1Idx - node2Idx == 1 || node1Idx - node2Idx == -1){
+            objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
+                    - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
+                    + distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node2Idx))
+                    + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode2Idx));
+            return objectiveChange;
+        }
+
         objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
                 - distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
                 - distanceMatrix.get(solution.get(prevNode2Idx)).get(solution.get(node2Idx))
@@ -68,6 +76,7 @@ public class Move {
                 + distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode1Idx))
                 + distanceMatrix.get(solution.get(prevNode2Idx)).get(solution.get(node1Idx))
                 + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode2Idx));
+
 
         return objectiveChange;
     }
@@ -78,6 +87,18 @@ public class Move {
 
         int prevNode2Idx = node2Idx == 0 ? solution.size() - 1 : node2Idx - 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
+
+        if (node1Idx - node2Idx == 1 || node1Idx - node2Idx == -1){
+            objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
+                    - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
+                    + distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node2Idx))
+                    + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode2Idx));
+
+            int temp = solution.get(node1Idx);
+            solution.set(node1Idx, solution.get(node2Idx));
+            solution.set(node2Idx, temp);
+            return solution;
+        }
 
         objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
                         - distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
