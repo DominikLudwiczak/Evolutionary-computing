@@ -54,6 +54,11 @@ public class Move {
     }
 
     private int SimulateSwapWithin(List<Integer> solution){
+        if (node1Idx > node2Idx){
+            int temp = node1Idx;
+            node1Idx = node2Idx;
+            node2Idx = temp;
+        }
         int prevNode1Idx = node1Idx == 0 ? solution.size() - 1 : node1Idx - 1;
         int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
 
@@ -61,10 +66,23 @@ public class Move {
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
         if (node1Idx - node2Idx == 1 || node1Idx - node2Idx == -1){
+
             objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
                     - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
                     + distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node2Idx))
                     + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode2Idx));
+
+            return objectiveChange;
+        }
+
+        if ((node1Idx == 0 && node2Idx == solution.size() - 1)
+                || (node2Idx == 0 && node1Idx == solution.size() - 1)) {
+
+            objectiveChange += -distanceMatrix.get(solution.get(nextNode1Idx)).get(solution.get(node1Idx))
+                    - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(prevNode2Idx))
+                    + distanceMatrix.get(solution.get(nextNode1Idx)).get(solution.get(node2Idx))
+                    + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(prevNode2Idx));
+
             return objectiveChange;
         }
 
@@ -82,6 +100,12 @@ public class Move {
     }
 
     private List<Integer> SwapWithin(List<Integer> solution){
+        if (node1Idx > node2Idx){
+            int temp = node1Idx;
+            node1Idx = node2Idx;
+            node2Idx = temp;
+        }
+
         int prevNode1Idx = node1Idx == 0 ? solution.size() - 1 : node1Idx - 1;
         int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
 
@@ -93,6 +117,20 @@ public class Move {
                     - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
                     + distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node2Idx))
                     + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode2Idx));
+
+            int temp = solution.get(node1Idx);
+            solution.set(node1Idx, solution.get(node2Idx));
+            solution.set(node2Idx, temp);
+            return solution;
+        }
+
+        if ((node1Idx == 0 && node2Idx == solution.size() - 1)
+                || (node2Idx == 0 && node1Idx == solution.size() - 1)) {
+
+            objectiveChange += -distanceMatrix.get(solution.get(nextNode1Idx)).get(solution.get(node1Idx))
+                    - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(prevNode2Idx))
+                    + distanceMatrix.get(solution.get(nextNode1Idx)).get(solution.get(node2Idx))
+                    + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(prevNode2Idx));
 
             int temp = solution.get(node1Idx);
             solution.set(node1Idx, solution.get(node2Idx));
