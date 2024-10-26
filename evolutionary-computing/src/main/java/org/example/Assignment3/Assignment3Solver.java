@@ -12,29 +12,53 @@ public class Assignment3Solver {
 
         var LocalSearch = new LocalSearch(Problem.getDistanceMatrix(), Problem.getNodeCosts());
 
+        var startTime = System.currentTimeMillis();
         var GreedyEdgesRandom = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.EXCHANGE_EDGES, StartingSolution.Random);
-        Solution.PerformNExperiments(GreedyEdgesRandom, 200, "GreedyIntraRandom", problemInstanceName, 3);
+        var endTime = System.currentTimeMillis();
+        Solution.PerformNExperiments(GreedyEdgesRandom, 200, "GreedyEdgesRandom", problemInstanceName, 3);
+        System.out.println("Execution time: " + (endTime - startTime) + "ms");
 
-        var GreedyEdgesRegret = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.EXCHANGE_EDGES, StartingSolution.Random);
-        Solution.PerformNExperiments(GreedyEdgesRegret, 200, "GreedyIntraRegret", problemInstanceName, 3);
+        startTime = System.currentTimeMillis();
+        var GreedyEdgesRegret = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.EXCHANGE_EDGES, StartingSolution.RegretWeighted);
+        endTime = System.currentTimeMillis();
+        Solution.PerformNExperiments(GreedyEdgesRegret, 200, "GreedyEdgesRegret", problemInstanceName, 3);
+        System.out.println("Execution time: " + (endTime - startTime) + "ms");
 
+        startTime = System.currentTimeMillis();
         var GreedyNodesRandom = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.SWAP_WITHIN, StartingSolution.Random);
-        Solution.PerformNExperiments(GreedyNodesRandom, 200, "GreedyInterRandom", problemInstanceName, 3);
+        endTime = System.currentTimeMillis();
+        Solution.PerformNExperiments(GreedyNodesRandom, 200, "GreedyNodesRandom", problemInstanceName, 3);
+        System.out.println("Execution time: " + (endTime - startTime) + "ms");
 
-        var GreedyNodesRegret = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.SWAP_WITHIN, StartingSolution.Random);
-        Solution.PerformNExperiments(GreedyNodesRegret, 200, "GreedyInterRegret", problemInstanceName, 3);
+        startTime = System.currentTimeMillis();
+        var GreedyNodesRegret = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.SWAP_WITHIN, StartingSolution.RegretWeighted);
+        endTime = System.currentTimeMillis();
+        Solution.PerformNExperiments(GreedyNodesRegret, 200, "GreedyNodesRegret", problemInstanceName, 3);
+        System.out.println("Execution time: " + (endTime - startTime) + "ms");
 
-        var SteepestEdgesRandom = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.EXCHANGE_EDGES, StartingSolution.Random);
-        Solution.PerformNExperiments(SteepestEdgesRandom, 200, "SteepestIntraRandom", problemInstanceName, 3);
+        startTime = System.currentTimeMillis();
+        var SteepestEdgesRandom = LocalSearch.Solve(200, TypeOfLocalSearch.Steepest, MoveType.EXCHANGE_EDGES, StartingSolution.Random);
+        endTime = System.currentTimeMillis();
+        Solution.PerformNExperiments(SteepestEdgesRandom, 200, "SteepestEdgesRandom", problemInstanceName, 3);
+        System.out.println("Execution time: " + (endTime - startTime) + "ms");
 
-        var SteepestEdgesRegret = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.EXCHANGE_EDGES, StartingSolution.Random);
-        Solution.PerformNExperiments(SteepestEdgesRegret, 200, "SteepestIntraRegret", problemInstanceName, 3);
+        startTime = System.currentTimeMillis();
+        var SteepestEdgesRegret = LocalSearch.Solve(200, TypeOfLocalSearch.Steepest, MoveType.EXCHANGE_EDGES, StartingSolution.RegretWeighted);
+        endTime = System.currentTimeMillis();
+        Solution.PerformNExperiments(SteepestEdgesRegret, 200, "SteepestEdgesRegret", problemInstanceName, 3);
+        System.out.println("Execution time: " + (endTime - startTime) + "ms");
 
-        var SteepestNodesRandom = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.SWAP_WITHIN, StartingSolution.Random);
-        Solution.PerformNExperiments(SteepestNodesRandom, 200, "SteepestInterRandom", problemInstanceName, 3);
+        startTime = System.currentTimeMillis();
+        var SteepestNodesRandom = LocalSearch.Solve(200, TypeOfLocalSearch.Steepest, MoveType.SWAP_WITHIN, StartingSolution.Random);
+        endTime = System.currentTimeMillis();
+        Solution.PerformNExperiments(SteepestNodesRandom, 200, "SteepestNodesRandom", problemInstanceName, 3);
+        System.out.println("Execution time: " + (endTime - startTime) + "ms");
 
-        var SteepestNodesRegret = LocalSearch.Solve(200, TypeOfLocalSearch.Greedy, MoveType.SWAP_WITHIN, StartingSolution.Random);
-        Solution.PerformNExperiments(SteepestNodesRegret, 200, "SteepestInterRegret", problemInstanceName, 3);
+        startTime = System.currentTimeMillis();
+        var SteepestNodesRegret = LocalSearch.Solve(200, TypeOfLocalSearch.Steepest, MoveType.SWAP_WITHIN, StartingSolution.RegretWeighted);
+        endTime = System.currentTimeMillis();
+        Solution.PerformNExperiments(SteepestNodesRegret, 200, "SteepestNodesRegret", problemInstanceName, 3);
+        System.out.println("Execution time: " + (endTime - startTime) + "ms");
     }
 
     public static void solve() {
