@@ -88,9 +88,7 @@ public class Move {
         int prevNode2Idx = node2Idx == 0 ? solution.size() - 1 : node2Idx - 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
-        if (node1Idx - node2Idx == 1 || node1Idx - node2Idx == -1
-                || node1Idx == 0 && node2Idx == solution.size() - 1
-                || node2Idx == 0 && node1Idx == solution.size() - 1){
+        if (node1Idx - node2Idx == 1 || node1Idx - node2Idx == -1){
             objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
                     - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
                     + distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node2Idx))
