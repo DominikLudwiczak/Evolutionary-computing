@@ -60,7 +60,7 @@ public class Move {
         int prevNode2Idx = node2Idx == 0 ? solution.size() - 1 : node2Idx - 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
-        objectiveChange -= distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
+        objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
                 - distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
                 - distanceMatrix.get(solution.get(prevNode2Idx)).get(solution.get(node2Idx))
                 - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
@@ -79,7 +79,7 @@ public class Move {
         int prevNode2Idx = node2Idx == 0 ? solution.size() - 1 : node2Idx - 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
-        objectiveChange -= distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
+        objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
                         - distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
                         - distanceMatrix.get(solution.get(prevNode2Idx)).get(solution.get(node2Idx))
                         - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
@@ -98,7 +98,7 @@ public class Move {
         int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
-        objectiveChange -= distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
+        objectiveChange += -distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
                 - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
                 + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(node2Idx))
                 + distanceMatrix.get(solution.get(nextNode1Idx)).get(solution.get(nextNode2Idx));
@@ -110,7 +110,7 @@ public class Move {
         int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
-        objectiveChange -= distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
+        objectiveChange += -distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
                         - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
                         + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(node2Idx))
                         + distanceMatrix.get(solution.get(nextNode1Idx)).get(solution.get(nextNode2Idx));
@@ -135,7 +135,7 @@ public class Move {
         int prevNode1Idx = node1Idx == 0 ? solution.size() - 1 : node1Idx - 1;
         int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
 
-        objectiveChange -= distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
+        objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
                 - distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
                 - nodeCosts.get(solution.get(node1Idx))
                 + distanceMatrix.get(solution.get(prevNode1Idx)).get(node2Idx)
@@ -148,7 +148,7 @@ public class Move {
         int prevNode1Idx = node1Idx == 0 ? solution.size() - 1 : node1Idx - 1;
         int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
 
-        objectiveChange -= distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
+        objectiveChange += -distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(node1Idx))
                         - distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
                         - nodeCosts.get(solution.get(node1Idx))
                         + distanceMatrix.get(solution.get(prevNode1Idx)).get(node2Idx)
