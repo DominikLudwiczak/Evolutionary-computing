@@ -42,7 +42,7 @@ public class LocalSearch {
 
         while(foundBetterSolution) {
             var minObjectiveChange = 0;
-            List<Integer> bestSolution = new ArrayList<>(solution);
+            Move bestMove = null;
             boolean breakLoop = false;
 
             for (int i = 0; i < solution.size() - 1; i++) {
@@ -68,14 +68,14 @@ public class LocalSearch {
                             case Greedy -> {
                                 if (objectiveChange < 0) {
                                     minObjectiveChange = objectiveChange;
-                                    bestSolution = move.MakeMove(bestSolution);
+                                    bestMove = move;
                                     breakLoop = true;
                                 }
                             }
                             case Steepest -> {
                                 if (objectiveChange < minObjectiveChange) {
                                     minObjectiveChange = objectiveChange;
-                                    bestSolution = move.MakeMove(bestSolution);
+                                    bestMove = move;
                                 }
                             }
                         }
@@ -92,13 +92,25 @@ public class LocalSearch {
                 }
             }
 
-            if(bestSolution.equals(solution)) {
+            if(bestMove == null) {
                 foundBetterSolution = false;
             } else {
-                solution = bestSolution;
+                solution = bestMove.MakeMove(solution);
             }
         }
         return solution;
+    }
+
+    public int CalculateDistance(List<Integer> solution)
+    {
+        int distance = nodeCosts.get(solution.get(0));
+        for (int i = 0; i < solution.size() - 1; i++) {
+
+            distance += distanceMatrix.get(solution.get(i)).get(solution.get(i + 1));
+            distance += nodeCosts.get(solution.get(i + 1));
+        }
+        distance += distanceMatrix.get(solution.get(solution.size() - 1)).get(solution.get(0));
+        return distance;
     }
 }
 
