@@ -157,6 +157,12 @@ public class Move {
         int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
+        if (node1Idx - node2Idx == 1 || node1Idx - node2Idx == -1
+                || (node1Idx == 0 && node2Idx == solution.size() - 1)
+                || (node2Idx == 0 && node1Idx == solution.size() - 1)){
+            return 0;
+        }
+
         if (node1Idx == node2Idx){
             return 0;
         }
