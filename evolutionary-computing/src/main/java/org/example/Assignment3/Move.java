@@ -157,6 +157,10 @@ public class Move {
         int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
+        if (node1Idx == node2Idx){
+            return 0;
+        }
+
         objectiveChange += -distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
                 - distanceMatrix.get(solution.get(node2Idx)).get(solution.get(nextNode2Idx))
                 + distanceMatrix.get(solution.get(node1Idx)).get(solution.get(node2Idx))
@@ -166,6 +170,9 @@ public class Move {
     }
 
     private List<Integer> ExchangeEdges (List<Integer> solution){
+        if (node1Idx == node2Idx){
+            return solution;
+        }
         int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
         int nextNode2Idx = node2Idx == solution.size() - 1 ? 0 : node2Idx + 1;
 
