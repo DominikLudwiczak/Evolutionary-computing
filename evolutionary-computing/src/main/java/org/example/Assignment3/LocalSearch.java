@@ -6,6 +6,8 @@ import org.example.Assignment2.RegretMyLifeChoices;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class LocalSearch {
     private List<List<Integer>> distanceMatrix;
@@ -28,7 +30,6 @@ public class LocalSearch {
                     solution = new RegretMyLifeChoices(this.distanceMatrix, this.nodeCosts, true).GenerateSolution(randomNode);
                 }
             }
-            System.out.println("Initial solution: " + this.CalculateDistance(solution));
             var newSolution = GenerateSolution(solution, typeOfLocalSearch, moveType);
             solutions.add(newSolution);
         }
@@ -36,21 +37,24 @@ public class LocalSearch {
     }
 
     public List<Integer> GenerateSolution(List<Integer> solution, TypeOfLocalSearch typeOfLocalSearch, MoveType moveType) {
-        List<MoveType> moveTypes = List.of(MoveType.CHANGE_WITH_NOT_USED, moveType);
+        List<MoveType> moveTypes = new ArrayList<>(List.of(MoveType.CHANGE_WITH_NOT_USED, moveType));
         boolean foundBetterSolution = true;
 
         while(foundBetterSolution) {
             var minObjectiveChange = 0;
-            List<Integer> bestSolution = null;
+            List<Integer> bestSolution = new ArrayList<>(solution);
             boolean breakLoop = false;
 
-            System.out.println(minObjectiveChange);
-            for (int i = 0; i < solution.size(); i++) {
-                for (int j = i + 1; j < solution.size(); j++) {
-                    for (MoveType mType : moveTypes) {
-                        if (solution.contains(j) && mType.equals(MoveType.CHANGE_WITH_NOT_USED)) {
-                            continue;
-                        }
+            for (int i = 0; i < solution.size() - 1; i++) {
+                java.util.Collections.shuffle(moveTypes);
+                for (MoveType mType : moveTypes) {
+                    List<Integer> nodes = IntStream.range(i+1, solution.size()).boxed().collect(Collectors.toList());
+                    if(mType == MoveType.CHANGE_WITH_NOT_USED) {
+                        List<Integer> finalSolution = solution;
+                        nodes = IntStream.range(0, this.nodeCosts.size()).filter(x -> !finalSolution.contains(x)).boxed().collect(Collectors.toList());
+                    }
+                    java.util.Collections.shuffle(nodes);
+                    for (int j : nodes) {
                         Move move;
                         if (this.moves.containsKey(mType + " " + i + " " + j)) {
                             move = this.moves.get(mType + " " + i + " " + j);
@@ -58,19 +62,20 @@ public class LocalSearch {
                             move = new Move(mType, i, j, this.nodeCosts, this.distanceMatrix);
                             this.moves.put(mType + " " + i + " " + j, move);
                         }
-                        var newSolution = move.MakeMove(solution);
+
+                        var objectiveChange = move.SimulateMove(solution);
                         switch (typeOfLocalSearch) {
                             case Greedy -> {
-                                if (move.getObjectiveChange() < 0) {
-                                    minObjectiveChange = move.getObjectiveChange();
-                                    bestSolution = newSolution;
+                                if (objectiveChange < 0) {
+                                    minObjectiveChange = objectiveChange;
+                                    bestSolution = move.MakeMove(bestSolution);
                                     breakLoop = true;
                                 }
                             }
                             case Steepest -> {
-                                if (move.getObjectiveChange() < minObjectiveChange) {
-                                    minObjectiveChange = move.getObjectiveChange();
-                                    bestSolution = newSolution;
+                                if (objectiveChange < minObjectiveChange) {
+                                    minObjectiveChange = objectiveChange;
+                                    bestSolution = move.MakeMove(bestSolution);
                                 }
                             }
                         }
@@ -87,27 +92,13 @@ public class LocalSearch {
                 }
             }
 
-            System.out.println("Objective change: " + minObjectiveChange);
-            System.out.println(solution.equals(bestSolution));
-            if(bestSolution == null) {
+            if(bestSolution.equals(solution)) {
                 foundBetterSolution = false;
             } else {
                 solution = bestSolution;
             }
         }
         return solution;
-    }
-
-    public int CalculateDistance(List<Integer> solution)
-    {
-        int distance = nodeCosts.get(solution.get(0));
-        for (int i = 0; i < solution.size() - 1; i++) {
-
-            distance += distanceMatrix.get(solution.get(i)).get(solution.get(i + 1));
-            distance += nodeCosts.get(solution.get(i + 1));
-        }
-        distance += distanceMatrix.get(solution.get(solution.size() - 1)).get(solution.get(0));
-        return distance;
     }
 }
 
