@@ -34,6 +34,8 @@ public class Move {
                 return ExchangeEdges(solution);
             case CHANGE_WITH_NOT_USED:
                 return ChangeWithNotUsed(solution);
+            case CANDIDATE_EDGE:
+                return CandidateEdge(solution);
             default:
                 return solution;
         }
@@ -48,8 +50,69 @@ public class Move {
                 return SimulateExchangeEdges(solution);
             case CHANGE_WITH_NOT_USED:
                 return SimulateChangeWithNotUsed(solution);
+            case CANDIDATE_EDGE:
+                return SimulateCandidateEdge(solution);
             default:
                 return 0;
+        }
+    }
+
+    private int SimulateCandidateEdge(List<Integer> solution) {
+        int prevNode1Idx = node1Idx == 0 ? solution.size() - 1 : node1Idx - 1;
+        int prevPrevNode1Idx = prevNode1Idx == 0 ? solution.size() - 1 : prevNode1Idx - 1;
+
+        int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
+        int nextNextNode1Idx = nextNode1Idx == solution.size() - 1 ? 0 : nextNode1Idx + 1;
+
+        int removePrev = -distanceMatrix.get(solution.get(node1Idx)).get(solution.get(prevNode1Idx))
+                - distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(prevPrevNode1Idx))
+                - nodeCosts.get(solution.get(prevNode1Idx))
+                + distanceMatrix.get(solution.get(node1Idx)).get(node2Idx)
+                + distanceMatrix.get(node2Idx).get(solution.get(prevPrevNode1Idx))
+                + nodeCosts.get(node2Idx);
+
+        int removeNext = -distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
+                - distanceMatrix.get(solution.get(nextNode1Idx)).get(solution.get(nextNextNode1Idx))
+                - nodeCosts.get(solution.get(nextNode1Idx))
+                + distanceMatrix.get(solution.get(node1Idx)).get(node2Idx)
+                + distanceMatrix.get(node2Idx).get(solution.get(nextNextNode1Idx))
+                + nodeCosts.get(node2Idx);
+
+        return Math.min(removePrev, removeNext);
+    }
+
+    private List<Integer> CandidateEdge(List<Integer> solution){
+        int prevNode1Idx = node1Idx == 0 ? solution.size() - 1 : node1Idx - 1;
+        int prevPrevNode1Idx = prevNode1Idx == 0 ? solution.size() - 1 : prevNode1Idx - 1;
+
+        int nextNode1Idx = node1Idx == solution.size() - 1 ? 0 : node1Idx + 1;
+        int nextNextNode1Idx = nextNode1Idx == solution.size() - 1 ? 0 : nextNode1Idx + 1;
+
+        int removePrev = -distanceMatrix.get(solution.get(node1Idx)).get(solution.get(prevNode1Idx))
+                - distanceMatrix.get(solution.get(prevNode1Idx)).get(solution.get(prevPrevNode1Idx))
+                - nodeCosts.get(solution.get(prevNode1Idx))
+                + distanceMatrix.get(solution.get(node1Idx)).get(node2Idx)
+                + distanceMatrix.get(node2Idx).get(solution.get(prevPrevNode1Idx))
+                + nodeCosts.get(node2Idx);
+
+        int removeNext = -distanceMatrix.get(solution.get(node1Idx)).get(solution.get(nextNode1Idx))
+                - distanceMatrix.get(solution.get(nextNode1Idx)).get(solution.get(nextNextNode1Idx))
+                - nodeCosts.get(solution.get(nextNode1Idx))
+                + distanceMatrix.get(solution.get(node1Idx)).get(node2Idx)
+                + distanceMatrix.get(node2Idx).get(solution.get(nextNextNode1Idx))
+                + nodeCosts.get(node2Idx);
+
+        objectiveChange = Math.min(removePrev, removeNext);
+
+        if (removeNext < removePrev){
+            var solutioncpy = new ArrayList<>(solution);
+            solutioncpy.set(nextNode1Idx, node2Idx);
+            return solutioncpy;
+        }
+        else{
+            var solutioncpy = new ArrayList<>(solution);
+            solutioncpy.set(prevNode1Idx, node2Idx);
+            return solutioncpy;
         }
     }
 
