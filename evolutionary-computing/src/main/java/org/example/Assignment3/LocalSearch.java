@@ -45,10 +45,12 @@ public class LocalSearch {
             Move bestMove = null;
             boolean breakLoop = false;
 
-            for (int i = 0; i < solution.size() - 1; i++) {
+            var solutionIndexes = new ArrayList<>(IntStream.range(0, solution.size() - 1).boxed().toList());
+            java.util.Collections.shuffle(solutionIndexes);
+            for (int i : solutionIndexes) {
                 java.util.Collections.shuffle(moveTypes);
                 for (MoveType mType : moveTypes) {
-                    List<Integer> nodes = IntStream.range(i+1, solution.size()).boxed().collect(Collectors.toList());
+                    var nodes = IntStream.range(i+1, solution.size()).boxed().collect(Collectors.toList());
                     if(mType == MoveType.CHANGE_WITH_NOT_USED) {
                         List<Integer> finalSolution = solution;
                         nodes = IntStream.range(0, this.nodeCosts.size()).filter(x -> !finalSolution.contains(x)).boxed().collect(Collectors.toList());
@@ -100,14 +102,4 @@ public class LocalSearch {
         }
         return solution;
     }
-}
-
-enum TypeOfLocalSearch {
-    Greedy,
-    Steepest
-}
-
-enum StartingSolution {
-    Random,
-    RegretWeighted
 }
