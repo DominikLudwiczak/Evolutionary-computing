@@ -5,6 +5,10 @@ import org.example.Assignment1.RandomSolution;
 import org.example.Assignment3.Move;
 import org.example.Assignment3.MoveType;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static org.example.Assignment3.MoveType.CANDIDATE_EDGE;
 
 public class LocalSearchNN {
     private List<List<Integer>> distanceMatrix;
@@ -28,7 +32,6 @@ public class LocalSearchNN {
     }
 
     public List<Integer> GenerateSolution(List<Integer> solution) {
-        List<MoveType> moveTypes = new ArrayList<>(List.of(MoveType.CHANGE_WITH_NOT_USED, MoveType.EXCHANGE_EDGES));
         boolean foundBetterSolution = true;
 
         while(foundBetterSolution) {
@@ -36,29 +39,27 @@ public class LocalSearchNN {
             Move bestMove = null;
 
             for (int i = 0; i < solution.size() - 1; i++) {
-                for (MoveType mType : moveTypes) {
-                    List<Integer> nodes;
-                    if(this.TenNNs.containsKey(i)) {
-                        nodes= this.TenNNs.get(i);
+                List<Integer> nodes;
+                if(this.TenNNs.containsKey(i)) {
+                    nodes= this.TenNNs.get(i);
+                } else {
+                    nodes = Find10NN(i, solution);
+                    this.TenNNs.put(i, nodes);
+                }
+                for (int j : nodes) {
+                    Move move;
+                    if (this.moves.containsKey(i + " " + j)) {
+                        move = this.moves.get(i + " " + j);
                     } else {
-                        nodes = Find10NN(i);
-                        this.TenNNs.put(i, nodes);
+                        move = new Move(CANDIDATE_EDGE, i, j, this.nodeCosts, this.distanceMatrix);
+                        this.moves.put(i + " " + j, move);
                     }
-                    for (int j : nodes) {
-                        Move move;
-                        if (this.moves.containsKey(mType + " " + i + " " + j)) {
-                            move = this.moves.get(mType + " " + i + " " + j);
-                        } else {
-                            move = new Move(mType, i, j, this.nodeCosts, this.distanceMatrix);
-                            this.moves.put(mType + " " + i + " " + j, move);
-                        }
 
-                        var objectiveChange = move.SimulateMove(solution);
+                    var objectiveChange = move.SimulateMove(solution);
 
-                        if (objectiveChange < minObjectiveChange) {
-                            minObjectiveChange = objectiveChange;
-                            bestMove = move;
-                        }
+                    if (objectiveChange < minObjectiveChange) {
+                        minObjectiveChange = objectiveChange;
+                        bestMove = move;
                     }
                 }
             }
@@ -72,9 +73,10 @@ public class LocalSearchNN {
         return solution;
     }
 
-    public List<Integer> Find10NN(int currentNode) {
+    public List<Integer> Find10NN(int currentNode, List<Integer> solution) {
         List<Pair<Integer, Integer>> distances = new ArrayList<>();
-        for (int i = 0; i < distanceMatrix.size(); i++) {
+        var nodes = IntStream.range(0, this.nodeCosts.size()).filter(x -> !solution.contains(x)).boxed().collect(Collectors.toList());
+        for (int i : nodes) {
             distances.add(Pair.of(i, distanceMatrix.get(currentNode).get(i)));
         }
 

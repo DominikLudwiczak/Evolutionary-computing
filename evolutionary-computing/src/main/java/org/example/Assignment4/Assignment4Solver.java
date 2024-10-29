@@ -14,9 +14,9 @@ public class Assignment4Solver {
         var LocalSearchNN = new LocalSearchNN(Problem.getDistanceMatrix(), Problem.getNodeCosts());
 
         var startTime = System.currentTimeMillis();
-        var SteepestEdgesRandom = LocalSearchNN.Solve(200);
+        var SteepestEdgesRandomCandidate = LocalSearchNN.Solve(200);
         var endTime = System.currentTimeMillis();
-        Solution.PerformNExperiments(SteepestEdgesRandom, 200, "SteepestEdgesRandom10NN", problemInstanceName, 4);
+        Solution.PerformNExperiments(SteepestEdgesRandomCandidate, 200, "SteepestEdgesRandomCandidate", problemInstanceName, 4);
         System.out.println("Execution time: " + (endTime - startTime) + "ms");
     }
 
