@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.example.Assignment3.MoveType.CANDIDATE_EDGE;
+import static org.example.Assignment3.MoveType.EXCHANGE_EDGES;
 
 public class LocalSearchNN {
     private List<List<Integer>> distanceMatrix;
@@ -32,6 +33,7 @@ public class LocalSearchNN {
     }
 
     public List<Integer> GenerateSolution(List<Integer> solution) {
+        List<MoveType> moveTypes = new ArrayList<>(List.of(EXCHANGE_EDGES, CANDIDATE_EDGE));
         boolean foundBetterSolution = true;
 
         while(foundBetterSolution) {
@@ -39,27 +41,34 @@ public class LocalSearchNN {
             Move bestMove = null;
 
             for (int i = 0; i < solution.size() - 1; i++) {
-                List<Integer> nodes;
-                if(this.TenNNs.containsKey(i)) {
-                    nodes= this.TenNNs.get(i);
-                } else {
-                    nodes = Find10NN(i, solution);
-                    this.TenNNs.put(i, nodes);
-                }
-                for (int j : nodes) {
-                    Move move;
-                    if (this.moves.containsKey(i + " " + j)) {
-                        move = this.moves.get(i + " " + j);
+                for (MoveType mType : moveTypes) {
+                    List<Integer> nodes;
+                    if(mType.equals(CANDIDATE_EDGE)) {
+                        if (this.TenNNs.containsKey(i)) {
+                            nodes = this.TenNNs.get(i);
+                        } else {
+                            nodes = Find10NN(i, solution);
+                            this.TenNNs.put(i, nodes);
+                        }
                     } else {
-                        move = new Move(CANDIDATE_EDGE, i, j, this.nodeCosts, this.distanceMatrix);
-                        this.moves.put(i + " " + j, move);
+                        nodes = IntStream.range(i+1, solution.size()).boxed().collect(Collectors.toList());
                     }
 
-                    var objectiveChange = move.SimulateMove(solution);
+                    for (int j : nodes) {
+                        Move move;
+                        if (this.moves.containsKey(mType + " " + i + " " + j)) {
+                            move = this.moves.get(mType + " " + i + " " + j);
+                        } else {
+                            move = new Move(mType, i, j, this.nodeCosts, this.distanceMatrix);
+                            this.moves.put(mType + " " + i + " " + j, move);
+                        }
 
-                    if (objectiveChange < minObjectiveChange) {
-                        minObjectiveChange = objectiveChange;
-                        bestMove = move;
+                        var objectiveChange = move.SimulateMove(solution);
+
+                        if (objectiveChange < minObjectiveChange) {
+                            minObjectiveChange = objectiveChange;
+                            bestMove = move;
+                        }
                     }
                 }
             }
