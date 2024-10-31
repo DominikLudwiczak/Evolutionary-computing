@@ -5,7 +5,6 @@ import org.example.Assignment1.RandomSolution;
 import org.example.Assignment3.Move;
 import org.example.Assignment3.MoveType;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.example.Assignment3.MoveType.CANDIDATE_EDGE;
@@ -33,7 +32,7 @@ public class LocalSearchNN {
     }
 
     public List<Integer> GenerateSolution(List<Integer> solution) {
-        List<MoveType> moveTypes = new ArrayList<>(List.of(EXCHANGE_EDGES, CANDIDATE_EDGE));
+        List<MoveType> moveTypes = new ArrayList<>(List.of(CANDIDATE_EDGE));
         boolean foundBetterSolution = true;
 
         while(foundBetterSolution) {
@@ -41,20 +40,15 @@ public class LocalSearchNN {
             Move bestMove = null;
 
             for (int i = 0; i < solution.size() - 1; i++) {
-                for (MoveType mType : moveTypes) {
-                    List<Integer> nodes;
-                    if(mType.equals(CANDIDATE_EDGE)) {
-                        if (this.TenNNs.containsKey(i)) {
-                            nodes = this.TenNNs.get(i);
-                        } else {
-                            nodes = Find10NN(i, solution);
-                            this.TenNNs.put(i, nodes);
-                        }
-                    } else {
-                        nodes = IntStream.range(i+1, solution.size()).boxed().collect(Collectors.toList());
-                    }
-
-                    for (int j : nodes) {
+                List<Integer> nodes;
+                if (this.TenNNs.containsKey(i)) {
+                    nodes = this.TenNNs.get(i);
+                } else {
+                    nodes = Find10NN(i);
+                    this.TenNNs.put(i, nodes);
+                }
+                for (int j : nodes) {
+                    for (MoveType mType : moveTypes) {
                         Move move;
                         if (this.moves.containsKey(mType + " " + i + " " + j)) {
                             move = this.moves.get(mType + " " + i + " " + j);
@@ -82,14 +76,15 @@ public class LocalSearchNN {
         return solution;
     }
 
-    public List<Integer> Find10NN(int currentNode, List<Integer> solution) {
+    public List<Integer> Find10NN(int currentNode) {
         List<Pair<Integer, Integer>> distances = new ArrayList<>();
-        var nodes = IntStream.range(0, this.nodeCosts.size()).filter(x -> !solution.contains(x)).boxed().collect(Collectors.toList());
+        var nodes = IntStream.range(0, this.nodeCosts.size()).boxed().toList();
+
         for (int i : nodes) {
             distances.add(Pair.of(i, distanceMatrix.get(currentNode).get(i)));
         }
 
         distances.sort(Comparator.comparingInt(Pair::getRight));
-        return distances.subList(1, 11).stream().map(Pair::getLeft).toList();
+        return distances.subList(0, 10).stream().map(Pair::getLeft).toList();
     }
 }
