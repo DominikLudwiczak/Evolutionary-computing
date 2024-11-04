@@ -32,7 +32,6 @@ public class LocalSearchNN {
     }
 
     public List<Integer> GenerateSolution(List<Integer> solution) {
-        List<MoveType> moveTypes = new ArrayList<>(List.of(CANDIDATE_EDGE));
         boolean foundBetterSolution = true;
 
         while(foundBetterSolution) {
@@ -48,21 +47,25 @@ public class LocalSearchNN {
                     this.TenNNs.put(i, nodes);
                 }
                 for (int j : nodes) {
-                    for (MoveType mType : moveTypes) {
-                        Move move;
-                        if (this.moves.containsKey(mType + " " + i + " " + j)) {
-                            move = this.moves.get(mType + " " + i + " " + j);
-                        } else {
-                            move = new Move(mType, i, j, this.nodeCosts, this.distanceMatrix);
-                            this.moves.put(mType + " " + i + " " + j, move);
-                        }
+                    MoveType mType = CANDIDATE_EDGE;
+                    int targetNode = j;
+                    if (solution.contains(j)) {
+                        mType = EXCHANGE_EDGES;
+                        targetNode = solution.indexOf(j);
+                    }
+                    Move move;
+                    if (this.moves.containsKey(mType + " " + i + " " + targetNode)) {
+                        move = this.moves.get(mType + " " + i + " " + targetNode);
+                    } else {
+                        move = new Move(mType, i, targetNode, this.nodeCosts, this.distanceMatrix);
+                        this.moves.put(mType + " " + i + " " + targetNode, move);
+                    }
 
-                        var objectiveChange = move.SimulateMove(solution);
+                    var objectiveChange = move.SimulateMove(solution);
 
-                        if (objectiveChange < minObjectiveChange) {
-                            minObjectiveChange = objectiveChange;
-                            bestMove = move;
-                        }
+                    if (objectiveChange < minObjectiveChange) {
+                        minObjectiveChange = objectiveChange;
+                        bestMove = move;
                     }
                 }
             }
@@ -81,7 +84,7 @@ public class LocalSearchNN {
         var nodes = IntStream.range(0, this.nodeCosts.size()).boxed().toList();
 
         for (int i : nodes) {
-            distances.add(Pair.of(i, distanceMatrix.get(currentNode).get(i)));
+            distances.add(Pair.of(i, distanceMatrix.get(currentNode).get(i) + nodeCosts.get(i)));
         }
 
         distances.sort(Comparator.comparingInt(Pair::getRight));

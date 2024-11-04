@@ -3,8 +3,9 @@ import matplotlib.pyplot as plt
 import os
 
 
-def create_empty_map(path_ids, title, instance):
-
+def create_empty_map(
+    path_ids: list[int], title: str, instance: str, assigment_number: int
+):
     data = pd.read_csv(
         f"../evolutionary-computing/src/main/resources/{instance}.csv",
         sep=";",
@@ -30,19 +31,21 @@ def create_empty_map(path_ids, title, instance):
     plt.legend()
 
     plt.grid(False)
-    plt.savefig("assignment3/" + title + ".png")
+    plt.savefig(f"assignment{assigment_number}/" + title + ".png")
 
 
-def main():
-    data = pd.read_csv("../evolutionary-computing/outputs/3/output.csv")
+def main(assignment_number: int):
+    data = pd.read_csv(
+        f"../evolutionary-computing/outputs/{assignment_number}/output.csv"
+    )
 
     for row in data.iterrows():
         solution = [int(x) for x in row[1]["Solution"][1:-1].split(", ")]
         instance = row[1]["Instance"]
         title = row[1]["Name"] + " - " + instance
         print(instance)
-        create_empty_map(solution, title, instance)
+        create_empty_map(solution, title, instance, assignment_number)
 
 
 if __name__ == "__main__":
-    main()
+    main(4)
