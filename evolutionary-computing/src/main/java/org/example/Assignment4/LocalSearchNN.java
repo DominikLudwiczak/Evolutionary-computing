@@ -4,6 +4,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.example.Assignment1.RandomSolution;
 import org.example.Assignment3.Move;
 import org.example.Assignment3.MoveType;
+import org.example.Main;
+
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -40,32 +42,67 @@ public class LocalSearchNN {
 
             for (int i = 0; i < solution.size() - 1; i++) {
                 List<Integer> nodes;
-                if (this.TenNNs.containsKey(i)) {
-                    nodes = this.TenNNs.get(i);
+                int currentNode = solution.get(i);
+                if (this.TenNNs.containsKey(currentNode)) {
+                    nodes = this.TenNNs.get(currentNode);
                 } else {
-                    nodes = Find10NN(i);
-                    this.TenNNs.put(i, nodes);
+                    nodes = Find10NN(currentNode);
+                    this.TenNNs.put(currentNode, nodes);
                 }
                 for (int j : nodes) {
                     MoveType mType = CANDIDATE_EDGE;
-                    int targetNode = j;
+                    Move move;
+
                     if (solution.contains(j)) {
                         mType = EXCHANGE_EDGES;
-                        targetNode = solution.indexOf(j);
-                    }
-                    Move move;
-                    if (this.moves.containsKey(mType + " " + i + " " + targetNode)) {
-                        move = this.moves.get(mType + " " + i + " " + targetNode);
-                    } else {
-                        move = new Move(mType, i, targetNode, this.nodeCosts, this.distanceMatrix);
-                        this.moves.put(mType + " " + i + " " + targetNode, move);
-                    }
+                        var targetNode = solution.indexOf(j);
+                        if (Math.abs(i - targetNode) == 1 || Math.abs(i - targetNode) == solution.size() - 1) {
+                            continue;
+                        }
+                        Move move2;
+                        if (this.moves.containsKey(mType + " " + i + " " + targetNode)) {
+                            move = this.moves.get(mType + " " + i + " " + targetNode);
+                        } else {
+                            move = new Move(mType, i, targetNode, this.nodeCosts, this.distanceMatrix);
+                            this.moves.put(mType + " " + i + " " + targetNode, move);
+                        }
 
-                    var objectiveChange = move.SimulateMove(solution);
+                        var objectiveChange = move.SimulateMove(solution);
+                        int prevI = i - 1 >= 0 ? i - 1 : solution.size() - 1;
+                        int prevTargetNode = targetNode - 1 >= 0 ? targetNode - 1 : solution.size() - 1;
+                        if (this.moves.containsKey(mType + " " + prevI + " " + prevTargetNode)) {
+                            move2 = this.moves.get(mType + " " + prevI + " " + prevTargetNode);
+                        } else {
+                            move2 = new Move(mType, prevI, prevTargetNode, this.nodeCosts, this.distanceMatrix);
+                            this.moves.put(mType + " " + prevI + " " + prevTargetNode, move);
+                        }
 
-                    if (objectiveChange < minObjectiveChange) {
-                        minObjectiveChange = objectiveChange;
-                        bestMove = move;
+                        var objectiveChange2 = move2.SimulateMove(solution);
+
+                        if (objectiveChange > objectiveChange2) {
+                            move = move2;
+                            objectiveChange = objectiveChange2;
+                        }
+
+                        if (objectiveChange < minObjectiveChange) {
+                            minObjectiveChange = objectiveChange;
+                            bestMove = move;
+                        }
+                    }
+                    else{
+                        if (this.moves.containsKey(mType + " " + i + " " + j)) {
+                            move = this.moves.get(mType + " " + i + " " + j);
+                        } else {
+                            move = new Move(mType, i, j, this.nodeCosts, this.distanceMatrix);
+                            this.moves.put(mType + " " + i + " " + j, move);
+                        }
+
+                        var objectiveChange = move.SimulateMove(solution);
+
+                        if (objectiveChange < minObjectiveChange) {
+                            minObjectiveChange = objectiveChange;
+                            bestMove = move;
+                        }
                     }
                 }
             }
@@ -84,6 +121,9 @@ public class LocalSearchNN {
         var nodes = IntStream.range(0, this.nodeCosts.size()).boxed().toList();
 
         for (int i : nodes) {
+            if (i == currentNode) {
+                continue;
+            }
             distances.add(Pair.of(i, distanceMatrix.get(currentNode).get(i) + nodeCosts.get(i)));
         }
 
