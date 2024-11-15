@@ -29,7 +29,7 @@ instances defined only by distance matrices.
    - Evaluate possible moves:
      - For each neighbor `j`:
        - If `j` is in the solution, use `EXCHANGE_EDGES`.
-       - Otherwise, use `CANDIDATE_EDGE`.
+       - Otherwise, use `CANDIDATE_EDGE`. (check both possibilities for edge exchange)
      - Simulate the move and calculate objective change.
 
    - Select the best move:
@@ -73,8 +73,8 @@ Calculate `objectiveChange` as follows:
 |                       |                           | TSPB     | 46019        | 51211        | 48491.05         | 96498               |
 |                       | STEEPEST-NODES-RANDOM     | TSPA     | 78755        | 96702        | 88257.14         | 108331              |
 |                       |                           | TSPB     | 55195        | 73086        | 62964.445        | 110889              |
-| **CANDIDATE EDGES**   | STEEPEST-CANDIDATE-RANDOM | TSPB     | 77619        | 94904        | 86978.275        | 5151                |
-|                       | STEEPEST-CANDIDATE-RANDOM | TSPB     | 52508        | 72355        | 58749.565        | 4985                |
+| **CANDIDATE EDGES**   | STEEPEST-CANDIDATE-RANDOM | TSPB     | 74279        | 84338        | 78094.115        | 10246               |
+|                       | STEEPEST-CANDIDATE-RANDOM | TSPB     | 45854        | 52213        | 49281.485        | 18969               |
 
 ## Source code link: [Github](https://github.com/DominikLudwiczak/Evolutionary-computing/tree/main)
 
