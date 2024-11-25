@@ -1,5 +1,6 @@
 package org.example.Assignment3;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.example.Assignment1.RandomSolution;
 import org.example.Assignment2.RegretMyLifeChoices;
 
@@ -30,15 +31,16 @@ public class LocalSearch {
                     solution = new RegretMyLifeChoices(this.distanceMatrix, this.nodeCosts, true).GenerateSolution(randomNode);
                 }
             }
-            var newSolution = GenerateSolution(solution, typeOfLocalSearch, moveType);
+            var newSolution = GenerateSolution(solution, typeOfLocalSearch, moveType).getKey();
             solutions.add(newSolution);
         }
         return solutions;
     }
 
-    public List<Integer> GenerateSolution(List<Integer> solution, TypeOfLocalSearch typeOfLocalSearch, MoveType moveType) {
+    public Pair<List<Integer>, Integer> GenerateSolution(List<Integer> solution, TypeOfLocalSearch typeOfLocalSearch, MoveType moveType) {
         List<MoveType> moveTypes = new ArrayList<>(List.of(MoveType.CHANGE_WITH_NOT_USED, moveType));
         boolean foundBetterSolution = true;
+        var bestObjectiveChange = 0;
 
         while(foundBetterSolution) {
             var minObjectiveChange = 0;
@@ -98,8 +100,9 @@ public class LocalSearch {
                 foundBetterSolution = false;
             } else {
                 solution = bestMove.MakeMove(solution);
+                bestObjectiveChange = minObjectiveChange;
             }
         }
-        return solution;
+        return Pair.of(solution, bestObjectiveChange);
     }
 }
