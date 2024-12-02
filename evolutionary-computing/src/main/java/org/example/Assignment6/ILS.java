@@ -3,12 +3,10 @@ package org.example.Assignment6;
 import org.apache.commons.lang3.tuple.Pair;
 import org.example.Assignment1.RandomSolution;
 import org.example.Assignment3.LocalSearch;
-import org.example.Assignment3.Move;
 import org.example.Assignment3.MoveType;
 import org.example.Assignment3.TypeOfLocalSearch;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -16,21 +14,19 @@ public class ILS {
     private List<List<Integer>> distanceMatrix;
     private List<Integer> nodeCosts;
     private LocalSearch LS;
-    private HashMap<String, Move> moves;
 
     public ILS(List<List<Integer>> distanceMatrix, List<Integer> nodeCosts) {
         this.distanceMatrix = distanceMatrix;
         this.nodeCosts = nodeCosts;
         this.LS = new LocalSearch(distanceMatrix, nodeCosts);
-        this.moves = new HashMap<>();
     }
 
-    public List<List<Integer>> Solve(int iterations) {
+    public List<List<Integer>> Solve(int iterations, Double avgTime) {
         List<List<Integer>> solutions = new ArrayList<>();
         List<Integer> LSruns = new ArrayList<>();
         for (int i = 0; i < iterations; i++) {
             List<Integer> solution =  new RandomSolution(this.distanceMatrix).Solve(1).get(0);
-            var genSol = GenerateSolution(solution);
+            var genSol = GenerateSolution(solution, avgTime);
             solutions.add(genSol.getKey());
             LSruns.add(genSol.getValue());
         }
@@ -38,21 +34,18 @@ public class ILS {
         return solutions;
     }
 
-    public Pair<List<Integer>, Integer> GenerateSolution(List<Integer> solution) {
+    public Pair<List<Integer>, Integer> GenerateSolution(List<Integer> solution, Double avgTime) {
         var startTime = System.currentTimeMillis();
         int LS_runs = 1;
         var LSsolution = LS.GenerateSolution(solution, TypeOfLocalSearch.Steepest, MoveType.EXCHANGE_EDGES);
         solution = LSsolution.getKey();
-        var SolObj = this.CalculateDistance(solution);
 
-        while(System.currentTimeMillis() - startTime <= 10000) {
+        while(System.currentTimeMillis() - startTime <= avgTime) {
             var perturbation = this.Perturb(solution);
             var LSperurbatedSolution = LS.GenerateSolution(perturbation.getKey(), TypeOfLocalSearch.Steepest, MoveType.EXCHANGE_EDGES);
             LS_runs++;
 
-            var LSobj = this.CalculateDistance(LSperurbatedSolution.getKey());
-            if(LSobj < SolObj) {
-                SolObj = LSobj;
+            if(LSperurbatedSolution.getValue() + perturbation.getValue() < 0) {
                 solution = LSperurbatedSolution.getKey();
             }
         }
@@ -95,17 +88,5 @@ public class ILS {
             currSolution.add(randomIndex, randomNode);
         }
         return Pair.of(currSolution, objectiveChange);
-    }
-
-    public int CalculateDistance(List<Integer> solution)
-    {
-        int distance = nodeCosts.get(solution.get(0));
-        for (int i = 0; i < solution.size() - 1; i++) {
-
-            distance += distanceMatrix.get(solution.get(i)).get(solution.get(i + 1));
-            distance += nodeCosts.get(solution.get(i + 1));
-        }
-        distance += distanceMatrix.get(solution.get(solution.size() - 1)).get(solution.get(0));
-        return distance;
     }
 }

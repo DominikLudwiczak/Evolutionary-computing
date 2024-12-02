@@ -1,5 +1,6 @@
 package org.example.Assignment6;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.example.Assignment1.RandomSolution;
 import org.example.Assignment3.LocalSearch;
 import org.example.Assignment3.MoveType;
@@ -17,7 +18,7 @@ public class MSLS {
         this.LS = new LocalSearch(distanceMatrix, nodeCosts);
     }
 
-    public List<List<Integer>> Solve(int iterations) {
+    public Pair<List<List<Integer>>, Double> Solve(int iterations) {
         List<List<Integer>> solutions = new ArrayList<>();
         List<Long> times = new ArrayList<>();
         for (int i = 0; i < iterations; i++) {
@@ -28,14 +29,16 @@ public class MSLS {
             times.add(endTime - startTime);
             solutions.add(newSolution);
         }
-        System.out.println("Average time: " + times.stream().mapToLong(Long::longValue).average().orElse(0) + "ms");
-        return solutions;
+
+        var avgTime = times.stream().mapToLong(Long::longValue).average().orElse(0);
+        System.out.println("Average time: " + avgTime + "ms");
+        return Pair.of(solutions, avgTime);
     }
 
     public List<Integer> GenerateSolution(List<Integer> solution) {
         var bestObjective = 0;
         List<Integer> bestSolution = solution;
-        for(int i=0; i < 20; i++) {
+        for(int i=0; i < 200; i++) {
             var LS_result = LS.GenerateSolution(solution, TypeOfLocalSearch.Steepest, MoveType.EXCHANGE_EDGES);
             if(LS_result.getValue() < bestObjective) {
                 bestObjective = LS_result.getValue();

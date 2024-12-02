@@ -1,34 +1,33 @@
-package org.example.Assignment6;
+package org.example.Assignment7;
 
 import org.example.ProblemDefinition.ProblemInitializer;
 import org.example.ProblemDefinition.SolutionChecker;
 import org.example.ProblemDefinition.SolutionSaver;
 
-public class Assignment6Solver {
-    public static void solveInstance(String problemInstance) {
+public class Assignment7Solver {
+    public static void solveInstance(String problemInstance, Double avgTime) {
         var Problem = new ProblemInitializer(problemInstance);
         var Solution = new SolutionChecker(Problem.getDistanceMatrix(), Problem.getNodeCosts());
         String problemInstanceName = problemInstance.substring(0, problemInstance.length() - 4);
 
-        var MSLS = new MSLS(Problem.getDistanceMatrix(), Problem.getNodeCosts());
-        var ILS = new ILS(Problem.getDistanceMatrix(), Problem.getNodeCosts());
+        var LNS = new LNS(Problem.getDistanceMatrix(), Problem.getNodeCosts());
 
         var startTime = System.currentTimeMillis();
-        var Msls = MSLS.Solve(20);
+        var Lns = LNS.Solve(20, false, avgTime);
         var endTime = System.currentTimeMillis();
-        Solution.PerformNExperiments(Msls.getKey(), 20, "MSLS", problemInstanceName, 6);
+        Solution.PerformNExperiments(Lns, 20, "LNS without LS", problemInstanceName, 7);
         System.out.println("Execution time: " + (endTime - startTime) + "ms");
 
         startTime = System.currentTimeMillis();
-        var Ils = ILS.Solve(20, Msls.getValue());
+        var LnsLS = LNS.Solve(20, true, avgTime);
         endTime = System.currentTimeMillis();
-        Solution.PerformNExperiments(Ils, 20, "ILS", problemInstanceName, 6);
+        Solution.PerformNExperiments(LnsLS, 20, "LNS with LS", problemInstanceName, 7);
         System.out.println("Execution time: " + (endTime - startTime) + "ms");
     }
 
     public static void solve() {
-        SolutionSaver.RemoveFile("output.csv", 6);
-        solveInstance("TSPA.csv");
-        solveInstance("TSPB.csv");
+        SolutionSaver.RemoveFile("output.csv", 7);
+        solveInstance("TSPA.csv", 16500.5);
+        solveInstance("TSPB.csv", 18915.8);
     }
 }

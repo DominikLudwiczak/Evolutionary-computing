@@ -40,7 +40,7 @@ public class LocalSearch {
     public Pair<List<Integer>, Integer> GenerateSolution(List<Integer> solution, TypeOfLocalSearch typeOfLocalSearch, MoveType moveType) {
         List<MoveType> moveTypes = new ArrayList<>(List.of(MoveType.CHANGE_WITH_NOT_USED, moveType));
         boolean foundBetterSolution = true;
-        var bestObjectiveChange = 0;
+        var AllObjectiveChange = 0;
 
         while(foundBetterSolution) {
             var minObjectiveChange = 0;
@@ -100,9 +100,9 @@ public class LocalSearch {
                 foundBetterSolution = false;
             } else {
                 solution = bestMove.MakeMove(solution);
-                bestObjectiveChange = minObjectiveChange;
+                AllObjectiveChange += minObjectiveChange;
             }
         }
-        return Pair.of(solution, bestObjectiveChange);
+        return Pair.of(solution, AllObjectiveChange);
     }
 }
