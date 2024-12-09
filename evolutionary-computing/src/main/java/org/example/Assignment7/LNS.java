@@ -2,10 +2,12 @@ package org.example.Assignment7;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.example.Assignment1.RandomSolution;
+import org.example.Assignment2.RegretMyLifeChoices;
 import org.example.Assignment3.LocalSearch;
 import org.example.Assignment3.MoveType;
 import org.example.Assignment3.TypeOfLocalSearch;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -13,20 +15,27 @@ public class LNS {
     private List<List<Integer>> distanceMatrix;
     private List<Integer> nodeCosts;
     private LocalSearch LS;
+    private HashSet<Integer> takenNodes;
+    private int cnt = 0;
 
     public LNS(List<List<Integer>> distanceMatrix, List<Integer> nodeCosts) {
         this.distanceMatrix = distanceMatrix;
         this.nodeCosts = nodeCosts;
         this.LS = new LocalSearch(distanceMatrix, nodeCosts);
+        this.cnt = 0;
     }
 
     public List<List<Integer>> Solve(int iterations, boolean withLS, Double avgTime) {
         List<List<Integer>> solutions = new ArrayList<>();
+
+        var counters = new ArrayList<Integer>();
         for (int i = 0; i < iterations; i++) {
             List<Integer> solution =  new RandomSolution(this.distanceMatrix).Solve(1).get(0);
             var newSolution = GenerateSolution(solution, withLS, avgTime);
             solutions.add(newSolution);
+            counters.add(cnt);
         }
+        System.out.println("Average number of iterations: " + counters.stream().mapToInt(Integer::intValue).average().orElse(0));
         return solutions;
     }
 
@@ -36,6 +45,7 @@ public class LNS {
         solution = LSsolution.getKey();
 
         while(System.currentTimeMillis() - startTime <= avgTime) {
+            cnt++;
             var destroyed = Destroy(solution);
             var repaired = Repair(destroyed.getKey());
 
@@ -90,8 +100,19 @@ public class LNS {
     }
 
     public Pair<List<Integer>, Integer> Repair(List<Integer> solution) {
-        var objectiveChange = 0;
-        return Pair.of(solution, objectiveChange);
+        takenNodes = new HashSet<>(solution);
+        var heuristic = new RegretMyLifeChoices(this.distanceMatrix, this.nodeCosts, true);
+        heuristic.setTakenNodes(takenNodes);
+        int[] objectiveChange = {0};
+
+        while (solution.size() < distanceMatrix.size() / 2) {
+            if (solution.size() <= 2){
+                solution = heuristic.findFirst2(solution, objectiveChange);
+            } else {
+                solution = heuristic.FindRegret2(solution, objectiveChange);
+            }
+        }
+        return Pair.of(solution, objectiveChange[0]);
     }
 
     public int CalculateDistance(List<Integer> solution)

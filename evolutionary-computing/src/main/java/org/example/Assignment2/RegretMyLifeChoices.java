@@ -8,6 +8,14 @@ public class RegretMyLifeChoices {
     private List<List<Integer>> distanceMatrix;
     private List<Integer> nodeCosts;
 
+    public HashSet<Integer> getTakenNodes() {
+        return takenNodes;
+    }
+
+    public void setTakenNodes(HashSet<Integer> takenNodes) {
+        this.takenNodes = takenNodes;
+    }
+
     private HashSet<Integer> takenNodes;
     private boolean weighted = false;
 
@@ -42,7 +50,7 @@ public class RegretMyLifeChoices {
         return solution;
     }
 
-    private List<Integer> FindRegret2(List<Integer> solution,
+    public List<Integer> FindRegret2(List<Integer> solution,
                                       int[] objective) {
         int addingNode = -1;
         var bestRegret = new RegretModel();
@@ -90,7 +98,7 @@ public class RegretMyLifeChoices {
         return solution;
     }
 
-    private List<Integer> findFirst2(List<Integer> solution, int[] objective) {
+    public List<Integer> findFirst2(List<Integer> solution, int[] objective) {
         int minCost = Integer.MAX_VALUE;
         int addingNode = -1;
         for (int i = 0; i < nodeCosts.size(); i++) {
