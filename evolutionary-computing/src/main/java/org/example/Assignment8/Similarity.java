@@ -58,7 +58,7 @@ public class Similarity {
                         result = ComputeSimilarityAverage(greedySolutions, measures[j]);
                     }
 
-                    String[] writeData = {versions[i].toString() + " | " + measures[j].toString(), problemInstance, result.toString()};
+                    String[] writeData = {versions[i].toString() + " - " + measures[j].toString(), problemInstance, result.toString()};
                     writer.writeNext(writeData);
                 }
             }
