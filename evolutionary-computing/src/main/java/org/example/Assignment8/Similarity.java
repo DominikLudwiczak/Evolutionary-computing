@@ -84,7 +84,17 @@ public class Similarity {
                 } else if (nextSolIndex != -1) {
                     nextSolIndex++;
                 }
-                if(nextSolIndex != -1 && compareTo.get(nextSolIndex).equals(solution.get(j + 1))) {
+                var prevSolIndex = nextSolIndex - 2;
+
+                if(prevSolIndex == -1 || prevSolIndex == -2) {
+                    prevSolIndex = compareTo.size() + prevSolIndex;
+                }
+
+                if(nextSolIndex != -1 &&
+                (
+                    compareTo.get(nextSolIndex).equals(solution.get(j + 1)) ||
+                    compareTo.get(prevSolIndex).equals(solution.get(j + 1))
+                )) {
                     similarity++;
                 }
             }
@@ -95,7 +105,17 @@ public class Similarity {
             } else if (nextSolIndex != -1) {
                 nextSolIndex++;
             }
-            if(nextSolIndex != -1 && compareTo.get(nextSolIndex).equals(solution.get(0))) {
+            var prevSolIndex = nextSolIndex - 2;
+
+            if(prevSolIndex == -1 || prevSolIndex == -2) {
+                prevSolIndex = compareTo.size() + prevSolIndex;
+            }
+
+            if(nextSolIndex != -1 &&
+            (
+                compareTo.get(nextSolIndex).equals(solution.get(0)) ||
+                compareTo.get(prevSolIndex).equals(solution.get(0))
+            )) {
                 similarity++;
             }
         }
