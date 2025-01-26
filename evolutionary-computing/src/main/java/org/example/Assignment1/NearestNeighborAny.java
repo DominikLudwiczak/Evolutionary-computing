@@ -90,16 +90,4 @@ public class NearestNeighborAny {
         }
         return newVisitedNodes;
     }
-
-    public int CalculateDistance(List<Integer> solution)
-    {
-        int distance = nodeCosts.get(solution.get(0));
-        for (int i = 0; i < solution.size() - 1; i++) {
-
-            distance += distanceMatrix.get(solution.get(i)).get(solution.get(i + 1));
-            distance += nodeCosts.get(solution.get(i + 1));
-        }
-        distance += distanceMatrix.get(solution.get(solution.size() - 1)).get(solution.get(0));
-        return distance;
-    }
 }
